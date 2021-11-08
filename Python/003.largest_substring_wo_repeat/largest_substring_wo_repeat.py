@@ -1,0 +1,30 @@
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        charMap = {}
+        for i in range(256):
+            charMap[i] = -1
+        ls = len(s)
+        i = max_len = 0
+        for j in range(ls):
+            # Note that when charMap[ord(s[j])] >= i, it means that there are
+            # duplicate character in current i,j. So we need to update i.
+            if charMap[ord(s[j])] >= i:
+                i = charMap[ord(s[j])] + 1
+            charMap[ord(s[j])] = j
+            max_len = max(max_len, j - i + 1)
+        return max_len
+
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        mx, start, chars = 0, 0, {}
+        for i in range(len(s)):
+            if s[i] in chars and start <= chars[s[i]]:
+                start = chars[s[i]] + 1
+            else:
+                mx = max(mx, i - start + 1)
+            chars[s[i]] = i
+        return mx
+
